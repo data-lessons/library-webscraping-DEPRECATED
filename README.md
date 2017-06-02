@@ -1,7 +1,7 @@
 # Library Carpentry
 
 A rendered version of this course can be found at 
-http://data-lessons.github.io/library-webscraping/
+http://data-lessons.github.io/library-webscraping/.
 
 ## Background
 
@@ -9,7 +9,7 @@ Library Carpentry is a software skills training programme aimed at library and i
 professions. It builds on the work of [Software Carpentry](http://software-carpentry.org/) and 
 [Data Carpentry](http://www.datacarpentry.org/).
 
-Library Carpentry is in the commons and for the commons. It is not tied to any institution of 
+Library Carpentry is in the commons and for the commons. It is not tied to any institution or
 person. For more information on Library Carpentry, see our website 
 [librarycarpentry.github.io/outline/](librarycarpentry.github.io/outline/).
 
