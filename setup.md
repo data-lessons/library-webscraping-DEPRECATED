@@ -3,52 +3,130 @@ layout: page
 title: Setup
 permalink: /setup/
 ---
-In order to follow this lesson, you will need to make sure the following software is installed on your computer.
 
-## Part one: Manually scrape data using browser extensions
+## Requirements
 
-For the first half of the lesson, we will use a Chrome browser extension to get started with web scraping.
+We will be using [Anaconda][anaconda] for this lesson, as it includes all of the necessary
+requirements. If you don't wish to install Anaconda, you will need to install each requirement
+separately. This document only details installation with Anaconda. 
 
-1. Please ensure you have a working copy of the [Chrome browser](https://www.google.com/intl/en/chrome/browser/).
-2. Using Chrome, download and enable the [Scraper extension](https://chrome.google.com/webstore/detail/scraper/mbigbapnjcgaffohmbkdlecaccepngjd).
+Please set up your Python environment prior to the workshop.  If you encounter problems with the
+installation procedure, ask your workshop organizers via e-mail for assistance, so you are ready
+to go when the workshop begins.
 
-## Part two: Write Python programs to automatically scrape data
+**Recommended:**
 
-### Shell and Python
-The second part of the lesson requires the Python programming language and access to a command-line interface (shell) on your computer.
-Please refer to [the Software Carpentry setup instructions](http://swcarpentry.github.io/workshop-template/#setup) for
-*the Bash shell* and *Python* if you need guidance.
+* [Anaconda](#anaconda)
 
-> ## Prerequisites
-> This part of the lesson requires some prior knowledge of Python and how to use a shell.
-> If you need help getting started on those topics, we suggest going through the following
-> lessons first (during a workshop or on your own):
->
-> * [The Unix Shell](http://swcarpentry.github.io/shell-novice/)
-> * [Programming with Python](http://swcarpentry.github.io/python-novice-inflammation/)
->
-{: .prereq}
+Optional:
 
-### Scrapy
+* [Python 3.x](#python)
+* [Spyder 3](#spyder)
+* [BeautifulSoup 4](#bs)
+* [Requests](#reqeusts)
 
-Once you have a working installation of Python, the next step is to install [Scrapy](https://scrapy.org/).
+<a name="anaconda"></a>
 
-If you have installed Python using the Anaconda framework as suggested by the Software Carpentry setup instructions,
-you can easilly install Scrapy by doing the following:
+## Installing all requirements using Anaconda 
 
-1. Open a new shell (e.g. Terminal on Mac, or the Anaconda command-line tool on Windows)
-2. Type the following:
+[Python][python] is a great language for general-purpose programming, and it even has tools 
+available that help with web scraping. Installing each of the additional tools for this lesson 
+individually can be a bit difficult, so we recommend the all-in-one installer [Anaconda][anaconda].
 
-> conda install -c conda-forge scrapy
->
-{: .source}
+Regardless of how you choose to install it, please make sure you install Python version 3.x 
+(e.g., Python 3.6 version).
 
-Alternatively, if you have another distribution of Python, you can try using pip:
+### Windows - [Video tutorial][video-windows]
 
-> pip install Scrapy
->
-{: .source}
+1. Open [http://continuum.io/downloads][continuum-windows] with your web browser.
 
-If you run into issues while installing Scrapy, refer to the
-[official Scrapy install guide](https://doc.scrapy.org/en/latest/intro/install.html#intro-install)
-or get in touch with your lesson instructor.
+2. Download the Python 3.x version installer for Windows.
+
+3. Double-click the executable and install Python 3 using _MOST_ of the default settings. 
+   The only exception is to check the **Make Anaconda the default Python** option.
+
+### macOS - [Video tutorial][video-mac]
+
+1. Open [http://continuum.io/downloads][continuum-mac] with your web browser.
+
+2. Download the Python 3.x version Graphical Installer for macOS.
+
+3. Install Python 3 using all of the defaults for installation.
+
+### Linux
+
+Note that the following installation steps require you to work from the shell. 
+If you run into any difficulties, please request help before the workshop begins.
+
+1.  Open [http://continuum.io/downloads][continuum-linux] with your web browser.
+
+2.  Download the Python 3.x version installer for Linux.
+
+3.  Install Python 3 using all of the defaults for installation.
+
+    a.  Open a terminal window.
+
+    b.  Navigate to the folder where you downloaded the installer
+
+    c.  Type
+
+    ~~~
+    $ bash Anaconda3-
+    ~~~
+    {: .bash}
+
+    and press tab.  The name of the file you just downloaded should appear.
+
+    d.  Press enter.
+
+    e.  Follow the text-only prompts.  When the license agreement appears (a colon
+        will be present at the bottom of the screen) hold the down arrow until the 
+        bottom of the text. Type `yes` and press enter to approve the license. Press 
+        enter again to approve the default location for the files. Type `yes` and 
+        press enter to prepend Anaconda to your `PATH` (this makes the Anaconda 
+        distribution the default Python).
+
+## Optional installation method
+
+If you've opted to install the requirements separately (not recommended), you will find links to 
+them below.
+
+* <a name="python"></a> [Python 3.x][python-install]
+* <a name="spyder"></a> [Spyder 3][spyder-install]
+* <a name="bs"></a> [BeautifulSoup 4][bs-install]
+* <a name="requests"></a> [Requests][requests-install]
+
+## Starting Python
+
+We will use the [Spyder IDE][spyder], the same IDE used in the Library Carpentry Python course. 
+If you installed Python using Anaconda, Spyder is already on your system.
+
+To start Spyder, open a terminal and type the command:
+
+On Windows and Linux:
+
+~~~
+$ spyder
+~~~
+{: .bash}
+
+On Mac:
+
+~~~
+$ spyder3
+~~~
+{: .bash}
+
+[anaconda]: https://www.continuum.io/anaconda
+[continuum-windows]: http://continuum.io/downloads#windows
+[continuum-mac]: http://continuum.io/downloads#macos
+[continuum-linux]: http://continuum.io/downloads#linux
+[python-install]: https://www.python.org/downloads/
+[spyder-install]: https://pythonhosted.org/spyder/installation.html
+[bs-install]: https://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup
+[requests-install]: http://docs.python-requests.org/en/master/user/install/#install
+[python]: https://python.org
+[spyder]: https://pythonhosted.org/spyder/
+[spyder-install]: https://pythonhosted.org/spyder/installation.html
+[video-mac]: https://www.youtube.com/watch?v=TcSAln46u9U
+[video-windows]: https://www.youtube.com/watch?v=xxQ0mzZ8UvA
