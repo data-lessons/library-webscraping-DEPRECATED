@@ -6,13 +6,13 @@ permalink: /setup/
 
 ## Requirements
 
-We will be using [Anaconda][anaconda] for this lesson, as it includes all of the necessary 
-requirements. If you don't wish to install Anaconda, you will need to install each requirement 
+We will be using [Anaconda][anaconda] for this lesson, as it includes all of the necessary
+requirements. If you don't wish to install Anaconda, you will need to install each requirement
 separately. This document only details installation with Anaconda. 
 
-Please set up your python environment at least a day in advance of the workshop.  If you encounter 
-problems with the installation procedure, ask your workshop organizers via e-mail for assistance 
-so you are ready to go as soon as the workshop begins.
+Please set up your Python environment prior to the workshop.  If you encounter problems with the
+installation procedure, ask your workshop organizers via e-mail for assistance, so you are ready
+to go when the workshop begins.
 
 **Recommended:**
 
@@ -30,7 +30,7 @@ Optional:
 ## Installing all requirements using Anaconda 
 
 [Python][python] is a great language for general-purpose programming, and it even has tools 
-available that help with web-scraping. Installing each of the additional tools for this lesson 
+available that help with web scraping. Installing each of the additional tools for this lesson 
 individually can be a bit difficult, so we recommend the all-in-one installer [Anaconda][anaconda].
 
 Regardless of how you choose to install it, please make sure you install Python version 3.x 
