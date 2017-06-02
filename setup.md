@@ -91,14 +91,10 @@ If you run into any difficulties, please request help before the workshop begins
 If you've opted to install the requirements separately (not recommended), you will find links to 
 them below.
 
-<a name="python"></a>
-* [Python 3.x][python-install]
-<a name="spyder"></a>
-* [Spyder 3][spyder-install]
-<a name="bs"></a>
-* [BeautifulSoup 4][bs-install]
-<a name="requests"></a>
-* [Requests][requests-install]
+* <a name="python"></a> [Python 3.x][python-install]
+* <a name="spyder"></a> [Spyder 3][spyder-install]
+* <a name="bs"></a> [BeautifulSoup 4][bs-install]
+* <a name="requests"></a> [Requests][requests-install]
 
 ## Starting Python
 
@@ -108,12 +104,14 @@ If you installed Python using Anaconda, Spyder is already on your system.
 To start Spyder, open a terminal and type the command:
 
 On Windows and Linux:
+
 ~~~
 $ spyder
 ~~~
 {: .bash}
 
 On Mac:
+
 ~~~
 $ spyder3
 ~~~
