@@ -11,7 +11,7 @@ For example, it can be contained in a PDF, or a table on a website, or spread ac
 
 There are a variety of ways to _scrape_ a website to extract information for reuse.
 In its simplest form, this can be achieved by
-copying and pasting snippets from a web page, but this can be unpractical if there is a large amount of data to
+copying and pasting snippets from a web page, but this can be impractical if there is a large amount of data to
 be extracted or if it is spread over a large number of pages. Instead, specialized tools and techniques can be used
 to automate this process by defining what sites to visit, what information to look for, and whether data extraction
 should stop at the end of a page or follow hyperlinks to repeat the process recursively.
