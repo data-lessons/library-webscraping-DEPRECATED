@@ -15,6 +15,7 @@ problems with the installation procedure, ask your workshop organizers via e-mai
 so you are ready to go as soon as the workshop begins.
 
 **Recommended:**
+
 * [Anaconda](#anaconda)
 
 Optional:
@@ -25,6 +26,7 @@ Optional:
 * [Requests](#reqeusts)
 
 <a name="anaconda"></a>
+
 ## Installing all requirements using Anaconda 
 
 [Python][python] is a great language for general-purpose programming, and it even has tools 
