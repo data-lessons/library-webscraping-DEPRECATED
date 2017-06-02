@@ -7,15 +7,15 @@ Web scraping is the process of extracting data from websites. Some data that is 
 presented in a format that makes it easier to collect and use it, for example in the form of downloadable
 comma-separated values (CSV) datasets that can then be imported in a spreadsheet or loaded into a data analysis
 script. Often however, even though it is publicly available, data is not readily available for reuse. 
-For example it can be contained in a PDF, or a table on a website, or spread across multiple web pages.
+For example, it can be contained in a PDF, or a table on a website, or spread across multiple web pages.
 
 There are a variety of ways to _scrape_ a website to extract information for reuse.
 In its simplest form, this can be achieved by
 copying and pasting snippets from a web page, but this can be unpractical if there is a large amount of data to
-be extracted, or if it spread over a large number of pages. Instead, specialized tools and techniques can be used
-to automate this process, by defining what sites to visit, what information to look for, and whether data extraction
-should stop once the end of a page has been reached, or whether to follow hyperlinks and repeat the process recursively.
-Automating web scraping also allows to define whether the process should be run at regular intervals and capture changes
+be extracted or if it is spread over a large number of pages. Instead, specialized tools and techniques can be used
+to automate this process by defining what sites to visit, what information to look for, and whether data extraction
+should stop at the end of a page or follow hyperlinks to repeat the process recursively.
+Automating web scraping also allows for defining whether the process should be run at regular intervals in order to capture changes
 in the data.
 
 
@@ -44,6 +44,6 @@ Refer to the [Setup](setup/) section to install the required software to follow 
 >
 > Please note that the contents of this lesson are still being actively developed. Any feedback is
 > appreciated, please do not hesitate to contact [the author](mailto:tom@timtom.ch) or contribute
-> to the lesson by [forking it on GitHub](https://github.com/timtomch/library-webscraping/).
+> to the lesson by [forking it on GitHub](https://github.com/data-lessons/library-webscraping/).
 >
 {: .callout}
