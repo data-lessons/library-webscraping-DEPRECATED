@@ -1,0 +1,27 @@
+digraph G {
+  dpi = 80;
+
+  node [ shape=box; style=solid ];
+
+  node [ color=green ];
+  roottype [ label="Attribute:\ntype='basic'"; ];
+  addressclass [ label="Attribute:\nclass='USA'" ];
+
+  node [ color=red ];
+  manufacturertext [ label="Text:\nPurina" ];
+  addresstext [ label="Text:\n12 Cat Way ..." ];
+  datetext [ label="Text:\n2019-10-01" ];
+
+  node [ style=bold; color=blue ];
+  root [ label="Root element:\n<catfood>" ];
+  manufacturer [ label="Element:\n<manufacturer>" ];
+  contact [ label="Element:\n<contact>" ];
+  address [ label="Element:\n<address>" ];
+  date [ label="Element:\n<date>" ];
+
+  root -> roottype;
+  root -> manufacturer -> manufacturertext;
+  root -> contact -> address -> addressclass;
+  address -> addresstext;
+  root -> date -> datetext;
+}

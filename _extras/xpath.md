@@ -1,5 +1,7 @@
 ---
 title: "Selecting content on a web page with XPath"
+layout: page
+permalink: /xpath/
 teaching: 30
 exercises: 15
 questions:
@@ -28,18 +30,38 @@ The material in this section was adapted from the [XPath and XQuery Tutorial](ht
 written by [Kim Pham](https://github.com/kimpham54) ([@tolloid](https://twitter.com/tolloid))
 for the July 2016 [Library Carpentry workshop](https://code4libtoronto.github.io/2016-07-28-librarycarpentry/) in Toronto.
 
-# Introduction
+# Matching patterns
+
+A key part of web scraping is describing to the computer how it should find the
+content you seek.  Several tools have been designed for succinctly describing
+patterns that can be matched to document structure so that selected content can
+be efficiently extracted.  The most important for web scraping are:
+
+* Regular expression: These specify portions of strings of characters (e.g.
+  text, a URL). They can be used to identify, for instance, typical forms of
+  date (yyyy-mm-dd, d/m/yyyy, etc.) or of an email address, or whether a URL is
+  the kind of URL you want to download and scrape.
+* XPath: These specify parts of a tree-structured document, be it XML or HTML.
+  They can be very specific about which nodes to include or exclude.
+* CSS selectors: These serve a similar function to XPath, in selecting parts of
+  an HTML document, but were designed for web development (for applying styles
+  such as colour to parts of a document) and so are more commonly known, but
+  also limited in what they can express relative to XPath. Every CSS selector
+  can be translated into an equivalent XPath expression.
+
 XPath (which stands for XML Path Language) is an _expression language_ used to specify parts of an XML document.
-XPath is rarely used on its own, rather it is used within software and languages that are aimed at manipulating
-XML documents, such as XSLT, XQuery or the web scraping tools that will be introduced later in this lesson.
-XPath can also be used in documents with a structure that is similar to XML, like HTML.
+XPath is often used within technologies aimed at manipulating XML documents, such as XSLT and XQuery.
+Later in this lesson we enter XPath expressions into web scraping tools, specifying parts of an HTML document to scrape.
 
 ## Markup Languages
+
+When you view a page in your web browser, this usually involves downloading content encoded in HTML. The browser then renders this content visually.
+
 XML and HTML are _markup languages_. This means that they use a set of tags or rules to organise and provide
 information about the data they contain. This structure helps to automate processing, editing, formatting,
 displaying, printing, etc. that information.
 
-XML documents stores data in plain text format. This provides a software- and hardware-independent way of storing,
+XML documents store data in plain text format. This provides a software- and hardware-independent way of storing,
 transporting, and sharing data. XML format is an open format, meant to be software agnostic. You can
 open an XML document in any text editor and the data it contains will be shown as it is meant to be represented.
 This allows for exchange between incompatible systems and easier conversion of data.
@@ -47,63 +69,111 @@ This allows for exchange between incompatible systems and easier conversion of d
 
 > ## XML and HTML
 >
-> Note that HTML and XML have a very similar structure, which is why XPath can be used almost interchangeably to
-> navigate both HTML and XML documents. In fact, starting with HTML5, HTML documents are fully-formed XML documents.
-> In a sense, HTML is like a particular dialect of XML.
+> Note that HTML and XML have a very similar structure, which is why XPath and CSS selectors can be used almost interchangeably to
+> navigate both HTML and XML documents.
+> In a loose sense, HTML is like a particular dialect of XML.
 >
 {: .callout}
 
-XML document follows basic syntax rules:
+## Structure of a marked-up document
 
-* An XML document is structured using _nodes_, which include element nodes, attribute nodes and text nodes
-* XML element nodes must have an opening and closing tag, e.g. `<catfood>` opening tag and `</catfood>` closing tag
-* XML tags are case sensitive, e.g. `<catfood>` does not equal `<catFood>`
-* XML elements must be properly nested:
+An XML document follows basic syntax rules:
 
-```
-<catfood>
+* An XML document is structured using _nodes_, which include element nodes, attribute nodes and text nodes.
+* XML element nodes must have an opening and closing tag, e.g. `<catfood>` opening tag and `</catfood>` closing tag. Everything between those tags is contained within the element.
+* XML _tag names_ are case sensitive, e.g. `<catfood>` does not equal `<catFood>`.
+* Within an element there may be other _child elements_. These must be properly nested (every child element that is opened must also be closed):
+
+~~~
+<catfood type="basic">
   <manufacturer>Purina</manufacturer>
-    <address> 12 Cat Way, Boise, Idaho, 21341</address>
+  <contact>
+    <address class="USA"> 12 Cat Way, Boise, Idaho, 21341</address>
+  </contact>
   <date>2019-10-01</date>
 </catfood>
-```
-* Text nodes (data) are contained inside the opening and closing tags
-* XML attribute nodes contain values that must be quoted, e.g.
-``` <catfood type="basic"></catfood> ```
+~~~
+{: .output}
+* Within an element there may also be text nodes. `Purina` and `2019-10-01` are both text nodes. Another text node contains the white space between `<catfood>` and `<manufacturer>`.
+* XML attribute nodes (like `type` in `<catfood>` above) have a name, and a value that must be quoted
+
+Note that there may be multiple elements with a particular tag name:
+~~~
+<product>
+  <catfood type="basic"> ... </catfood>
+  <catfood type="basic"> ... </catfood>
+  <catfood type="premium"> ... </catfood>
+</product>
+~~~
+{: .output}
+
+Some of these rules are relaxed in HTML:
+
+* tag and attribute names are case insensitive (`<catfood type="basic">` equals `<catFood Type="basic">`)
+* some elements are closed automatically (e.g. `<img>` cannot contain any other elements or text)
+* attribute values do not need to be quoted
+
+HTML can nonetheless be represented as a tree of nodes.
+
+## Tree structure
+
+A popular way to represent the structure of an XML or HTML document is the _node tree_, where each rectangle is a node:
+
+![XML node tree]({{ page.root }}/fig/catfood-tree.png)
+
+We use the terms _parent_, _child_ and _sibling_ to describe the hierarchical relationships between nodes:
+
+* The top node is called the *root* (or *root node*).
+* Every node has exactly one *parent*, except the root (which has no parent).
+* An element (one kind of node) node can have zero, one or several *children*. Attribute and text nodes have no children.
+* *Siblings* are nodes with the same parent.
+* The sequence of connections from node to node is called a *path*.
+* A node's children and its children's children, etc., are called its *descendants*. Similarly, a node's parent and its parent's parent, etc., are called its ancestors.
+
+## Common HTML elements
+
+In HTML, the tag names aren't usually as specific in their semantics as `manufacturer` or `address`. Here are some of the most common HTML elements:
+
+| Tag name        | What it is used for                     |
+|-----------------|-----------------------------------------|
+| `p`             | A paragraph of text                     |
+| `h1`            | A top-level heading                     |
+| `h2`, `h3`, ... | A lower-level heading                   |
+| `li`            | An item in a list                       |
+| `img`           | An image                                |
+| `tr`            | A row in a table                        |
+| `td`            | A cell in a table                       |
+| `a`             | A link                                  |
+| `div`           | A block of space on the page (generic)  |
+| `span`          | A portion of text on the page (generic) |
+| `meta`          | Information about the page that is not shown |
+
+See the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) for a full listing.
 
 # XPath Expressions
 
-XPath is written using expressions. Expressions consist of values, e.g., 368, and operators, e.g., +, that will return 
-a single value. `368 + 275` is an example of an expression. It will return the value `643`. In programming terminology, this is called evaluating, which simply means reducing down to a single value. A single value with no operators, e.g. `35`, can also be called an expression, though it will evaluate only to its existing value, e.g. 35.
-
 Using XPath is similar to using advanced search in a library catalogue, where the structured nature of bibliographic information allows us to specify which metadata fields to query. For example, if we want to find books *about* Shakespeare but not works *by* him, we can limit our search function to the `subject` field only.
 
-When we use XPath, we do not need to know in advance what the data we want looks like (as we would with regular expressions, where we need to know the pattern of the data). Since XML documents are structured into fields called nodes, XPath makes use of that structure to navigate through the nodes to select the data we want. We just need to know in which nodes within an XML file the data we want to find resides. When XPath expressions are evaluated on XML documents, they return objects containing the nodes that you specify. 
+When we use XPath, we do not need to know in advance what the content we want looks like (as we would with regular expressions, where we need to know the pattern of the data). Since XML documents are structured as a network of nodes, XPath makes use of that structure to navigate through the nodes to select the data we want. We just need to know in which nodes within an XML file the content we want to find resides.
 
-## XPath always assumes *structured* data.
+An XPath *expression* is, somewhat like a search query, a short piece of text that describes which nodes are sought. An XPath expression can be *evaluated* on a document (or on each of many documents): the XPath evaluator follows the instructions implied by the XPath expression, finds the sought nodes in the document and returns them.
 
-Now let's start using XPath.
+Here are some examples of the sort of things one can express with CSS selectors (and XPath for comparison) based on the document fragments above above:
+
+| CSS selector         | XPath expression           | Description |
+|----------------------|----------------------------|-------------|
+| `address`            | `//address`                | Get every `address` element (and its contents) in the document |
+| `catfood address`    | `//catfood//address`       | Get every `address` element somewhere inside a `catfood` element |
+| `catfood[type=basic]`| `//catfood[@type='basic']` | Get every `catfood` element that has a `type` element with value "basic" |
+
 
 ## Navigating through the HTML node tree using XPath
 
-A popular way to represent the structure of an XML or HTML document is the _node tree_:
+The following images show a node tree:
 
 ![HTML Node Tree](http://www.w3schools.com/js/pic_htmltree.gif)
 
-In an HTML document, everything is a node:
-
-* The entire document is a document node
-* Every HTML element is an element node
-* The text inside HTML elements are text nodes
-
-The nodes in such a tree have a hierarchical relationship to each other. We use the terms _parent_, _child_ and
-_sibling_ to describe these relationships:
-
-* In a node tree, the top node is called the *root* (or *root node*)
-* Every node has exactly one *parent*, except the root (which has no parent)
-* A node can have zero, one or several *children*
-* *Siblings* are nodes with the same parent
-* The sequence of connections from node to node is called a *path*
+XPath is built around describing the relationships between its elements:
 
 ![Node relationships](http://www.w3schools.com/js/pic_navigate.gif)
 
@@ -117,21 +187,26 @@ The most useful path expressions are listed below:
 
 | Expression   | Description |
 |-----------------|:-------------|
-| ```nodename```| Select all nodes with the name "nodename"   |
-| ```/```  | A beginning single slash indicates a select from the root node, subsequent slashes indicate selecting a child node from current node  |
-| ```//``` | Select direct and indirect child nodes in the document from the current node - this gives us the ability to "skip levels" |
-| ```.```       | Select the current context node   |
-|```..```  | Select the parent of the context node|
-|```@```  | Select attributes of the context node|
-|```[@attribute = 'value']```   |Select nodes with a particular attribute value|
+| `nodename`| Select all nodes with the name "nodename"   |
+| `/`  | A beginning single slash indicates a select from the root node, subsequent slashes indicate selecting a child node from current node  |
+| `//` | Select direct and indirect child nodes in the document from the current node - this gives us the ability to "skip levels" |
+| `.`       | Select the current context node   |
+|`..`  | Select the parent of the context node|
+|`@`  | Select attributes of the context node|
+|`[@attribute = 'value']`   |Select nodes with a particular attribute value|
 |`text()`| Select the text content of a node|
 | &#124;|Pipe chains expressions and brings back results from either expression, think of a set union |
 
+> ## Drill common XPath expressions using the XPath Diner
+>
+> The [XPath Diner](http://www.topswagcode.com/xpath) is a fun way to practice writing XPath expressions. It shows XML code, with a corresponding display of food, and challenges you to select certain food, and only that food, by writing an appropriate XPath expression. In the pane on the right, it teaches you about expression syntax relevant to the current challenge.
+>
+{: .challenge}
 
-## Navigating through a webpage with XPath using a browser console
+## Evaluating XPath in a web browser
 
 We will use the HTML code that describes this very page you are reading as an example. By default, a web browser
-interprets the HTML code to determine what markup to apply to the various elements of a document, and the code is
+interprets the HTML code to determine how to present the various elements of a document, and the code is
 invisible. To make the underlying code visible, all browsers have a function to display the raw HTML content of
 a web page.
 
@@ -176,10 +251,10 @@ We can see from the source code that the title of this page is in a `title` elem
 `head` element, which is itself inside an `html` element that contains the entire content of the page.
 
 Say we wanted to tell a web scraper to look for the title of this page, we would use this information to indicate the
-_path_ the scraper would need to follow at it navigates through the HTML content of the page to reach the `title`
+_path_ the scraper would need to follow as it navigates through the HTML content of the page to reach the `title`
 element. XPath allows us to do that.
 
-We can run XPath queries directly from within all major modern browsers, by enabling the built-in JavaScript console.
+We can evaluate XPath expressions directly from within all major modern browsers, by enabling the built-in JavaScript console.
 
 > ## Display the console in your browser
 >
@@ -195,9 +270,9 @@ Here is how the console looks like in the Firefox browser:
 ![JavaScript console in Firefox]({{ page.root }}/fig/firefox-console.png)
 
 For now, don't worry too much about error messages if you see any in the console when you open it. The console
-should display a _prompt_ with a `> ` character (`>>` in Firefox) inviting you to type commands.
+should display a _prompt_ with a `>` character (`»` in Firefox) inviting you to type commands.
 
-The syntax to run an XPath query within the JavaScript console is `$x("XPATH_QUERY")`, for example:
+The syntax to evaluate an XPath expression on the current page within the JavaScript console is `$x("XPATH_QUERY")`. For example:
 
 ~~~
 $x("/html/head/title/text()")
@@ -226,8 +301,8 @@ the _root_ of the document. With that query, we told the browser to
 
 Using this syntax, XPath thus allows us to determine the exact _path_ to a node.
 
-> ## Select the "Introduction" title
-> Write an XPath query that selects the "Introduction" title above and try running it in the console.
+> ## Select the "Matching patterns" title
+> Write an XPath query that selects the "Matching patterns" title above and try running it in the console.
 >
 > Tip: if a query returns multiple elements, the syntax `element[1]` can be used. Note that
 > XPath uses one-based indexing, therefore the first element has index 1, the second has index 2 etc.
@@ -242,7 +317,7 @@ Using this syntax, XPath thus allows us to determine the exact _path_ to a node.
 > > should produce something similar to
 > >
 > > ~~~
-> > <- Array [ <h1#introduction> ]
+> > <- Array [ <h1#matching-patterns> ]
 > > ~~~
 > > {: .output}
 > >
@@ -254,7 +329,7 @@ ways to reach a specific HTML node using XPath, let's start by looking closer at
 within a document and what their relationships with each others are.
 
 
-For example, to select all the `blockquote` nodes of this page, we can write
+For example, to select all the `blockquote` elements visible on this page, we can write
 
 ~~~
 $x("html/body/div/blockquote")
@@ -312,15 +387,38 @@ Array [ <blockquote.challenge>, <blockquote.challenge>, <blockquote.challenge>, 
 ~~~
 {: .output}
 
+> ## Finding by class name in XPath
+>
+> In general, an element may have many classes, which are separated by space in
+> the attribute. For example the following element has two classes, `author` and
+> `author-id3451`.
+> 
+> ~~~
+> <span class="author author-id3451">Jane Bloggs</span>
+> ~~~
+> {: .source}
+> 
+> CSS selectors make selecting by class easy: `.author` will select any element
+> with the `author` class; `.author-id3451` any element with that class.
+> 
+> XPath is unwieldy for expressing that an attribute should contain a particular
+> whitespace-delimited word. The following is *usually* sufficient to match
+> any element with an `author` class:
+> 
+> ~~~
+> //*[contains(concat(' ', @class, ' '), ' author ')]
+> ~~~
+> {: .source}
+{: .callout}
 
-> ## Select the "Introduction" title by ID
-> In a previous challenge, we were able to select the "Introduction" title because we knew it was
+> ## Select the "Matching patterns" title by ID
+> In a previous challenge, we were able to select the "Matching patterns" title because we knew it was
 > the first `h1` element on the page. But what if we didn't know how many such elements were on the
-> page. In other words, is there a different attribute that allows us to uniquely identify that title
+> page? In other words, is there a different attribute that allows us to uniquely identify that title
 > element?
 >
 > Using the path expressions introduced above, rewrite your XPath query to select
-> the "Introduction" title without using the `[1]` index notation.
+> the "Matching patterns" title without using the `[1]` index notation.
 >
 > Tips:
 >
@@ -332,21 +430,33 @@ Array [ <blockquote.challenge>, <blockquote.challenge>, <blockquote.challenge>, 
 > > ## Solution
 > >
 > > ~~~
-> > $x("/html/body/div/h1[@id='introduction']")
+> > $x("/html/body/div/h1[@id='matching-patterns']")
 > > ~~~
 > > {: .source}
 > >
 > > should produce something similar to
 > >
 > > ~~~
-> > <- Array [ <h1#introduction> ]
+> > <- Array [ <h1#matching-patterns> ]
 > > ~~~
 > > {: .output}
 > >
 > {: .solution}
 {: .challenge}
 
-
+> ## What makes a good XPath expression?
+> Essential to web scraping is being able to select the set of elements you want, without selecting any additional elements.
+> Many web scrapers are run periodically on web sites with changing data. One challenge is that the structure of that page
+> can also change or vary across items being scraped.
+>
+> A good XPath expression may be characterised by:
+>
+> * being specific: not capturing things you don't need
+> * being robust to change: the expression should ideally still work if some basic things about the page structure change (e.g. an image is inserted; a field, such as an author's name, is absent). If the expression breaks due to change it is _better for it to extract nothing_ than to extract the wrong thing as it is easy to monitor how many XPaths come back empty.
+> * being easy to read: if things are going to break or change, readable selectors help to avoid redesigning the selector from scratch.
+>
+> All of these characteristics suggest preferring IDs and classes (and perhaps other attributes) where possible, and being judicious in choosing between a child or a descendant operator.
+{: .callout}
 
 
 > ## Select this challenge box
@@ -578,7 +688,7 @@ XPath Axes fuller syntax of how to use XPath. Provides all of the different ways
 Oftentimes, the elements we are looking for on a page have no ID attribute or
 other uniquely identifying features, so the next best thing is to aim for
 neighboring elements that we can identify more easily and then use node
-relationships to get from those easy to identify elements to the target elements.
+relationships to get from those easy-to-identify elements to the target elements.
 
 For example, the node tree image above has no uniquely identifying feature like an ID attribute.
 However, it is just below the section header "Navigating through the HTML node tree using XPath".
