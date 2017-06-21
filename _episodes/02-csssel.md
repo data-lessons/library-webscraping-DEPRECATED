@@ -607,7 +607,15 @@ Viewing the HTML source of a page may help you design an appropriate selector. A
 * Hovering your mouse cursor over an HTML element will highlight its position in the document.
 * Above or below the HTML (depeding on web browser) you can see the list of elements (their tag names, IDs and classes) from the root to the selected element shown as basic CSS selectors.
 
-Browser extensions such as [CSS Selector Helper](https://chrome.google.com/webstore/detail/gddgceinofapfodcekopkjjelkbjodin) may further assist in developing a specific selector.
+Browser extensions such as [CSS Selector Helper for Chrome](https://chrome.google.com/webstore/detail/gddgceinofapfodcekopkjjelkbjodin) may further assist in developing a specific selector.
+
+> ## Source vs computed DOM
+> What you see in the element / DOM inspector, and what `document.querySelectorAll` evaluates CSS selectors on, need not be identical to what you see in View Source.  The DOM (Document Object Model) is the version of the node tree computed by the browser after reading the HTML source, but also after running any _scripts_ associated with the page.  These scripts can modify the computed node tree in arbitrary ways, including loading content from other places and changing the page in response to interaction. Another reason the DOM may differ from the raw HTML is if the raw HTML is invalid: the web browser (or any HTML parser) needs to make interpretive decisions about where a missing closing tag of an element should be placed, or whether a closing tag lacking an opening tag like (`</p>`) should be treated as empty (`<p></p>`) or deleted altogether.
+>
+> Thus CSS selectors may give different results on the computed DOM than on the original HTML source.
+>
+> Web scraping has traditionally been performed on the HTML source. Some scraper tools instead incorporate a _web driver_ (basically a web browser with a computer operating it rather than a human) which runs all appropriate scripts and can even simulate interaction with the page.
+{: .callout}
 
 # References
 
