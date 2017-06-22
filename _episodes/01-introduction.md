@@ -15,7 +15,7 @@ keypoints:
 - "Web scraping is the process of automating the extraction of data from web sites."
 ---
 
-## What is web scraping?
+# What is web scraping?
 
 Web scraping is a technique for extracting information from websites. This can be done manually
 but it is usually faster, more efficient and less error-prone to automate the task. 
@@ -50,62 +50,62 @@ As useful as scraping is, there might be better options for the task. Choose the
 [Facebook API](https://developers.facebook.com/tools/explorer/), the [Twitter APIs](https://dev.twitter.com/rest/public) or the [YouTube comments API](https://developers.google.com/youtube/v3/docs/commentThreads/list).
 - For much larger needs, Freedom of information requests can be useful. Be specific about the formats required for the data you want.
 
-## Example: scraping government websites for contact addresses
+# Example: a database of UN Security Council Resolutions
 
-In this lesson, we will extract contact information
-from government websites that list the members of various constituencies. Librarians could use this example
-to scrape informatiomn from any site listing contact details. 
-
-Let's start by looking at the current list of members of the Canadian parliament, which is available
-on the [Parliament of Canada website](http://www.parl.gc.ca/Parliamentarians/en/members).
-
-This is how this page appears in November 2016:
-
-![Screenshot of the Parliament of Canada website]({{ page.root }}/fig/canparl.png)
-
-There are several features (circled in the image above) that make the data on this page easier to work with.
-The search, reorder, refine features and display modes hint that the data is actually stored in a (structured)
-database before being displayed on this page. The data can be readily downloaded either as a comma separated values (.csv)
-file or as XML for re-use in their own database, spreadsheet or computer program.
-
-Even though the information displayed in the view above is not labelled, anyone visiting this site with some
-knowledge of Canadian geography and politics can see what information pertains to the 
-politicians' names, the geographical area they come from and the political party they represent. This is because human
-beings are good at using context and prior knowledge to quickly categorise information.
-
-Computers, on the other hand, cannot do this unless we provide them with more information.
-Fortunately, if we examine the source HTML code of this page, we can see that the information displayed is actually
-organised inside labelled elements:
+In this lesson, we will extract the history of resolutions made by the United
+Nations Security Council (UNSC) as [found on its web
+site](http://www.un.org/en/sc/documents/resolutions/).  Each year from 1946 to
+now has its own page on which resolutions from that year are posted in a
+tabular form. Our task is to build a system which extracts a spreadsheet in
+comma-delimited (CSV) format with rows like:
 
 ~~~
-(...)
-<div>
-    <a href="/Parliamentarians/en/members/Ziad-Aboultaif(89156)"> 
-        <img alt="Photo - Ziad Aboultaif - Click to open the Member of Parliament profile" title="Photo - Ziad Aboultaif - Click to open the Member of Parliament profile" src="http://www.parl.gc.ca/Parliamentarians/Images/OfficialMPPhotos/42/AboultaifZiad_CPC.jpg" class="picture" />
-        <div class="full-name">
-		    <span class="honorific"><abbr></abbr></span>
-            <span class="first-name">Ziad</span>
-            <span class="last-name">Aboultaif</span>
-        </div>
-    </a>
-    <div class="caucus-banner" style="background-color:#002395"></div>
-    <div class="caucus">Conservative</div>
-    <div class="constituency">Edmonton Manning</div>
-    <div class="province">Alberta</div>        
-</div>
-(...)
+year,symbol,title,url
+…
+2010,S/RES/1942 (2010),Côte d'Ivoire,http://www.un.org/en/ga/search/view_doc.asp?symbol=S/RES/1942(2010)
+2010,S/RES/1941 (2010),Sierra Leone,http://www.un.org/en/ga/search/view_doc.asp?symbol=S/RES/1941(2010)
+…
+1962,S/RES/174 (1962),Admission of new Members to the UN: Jamaica,http://www.un.org/en/ga/search/view_doc.asp?symbol=S/RES/174(1962)
+…
 ~~~
 {: .output}
 
-Thanks to these labels, we could relatively easily instruct a computer to look for all parliamentarians from
-Alberta and list their names and caucus information.
+This comma-delimited format lists each resolution on a separate line, with the
+fields "year", "symbol", "title" and "url" separated by commas (",").
 
-> ## Structured vs unstructured data
+Looking at the web site, it appears quite close to this format already: each page, such as
+[the one for 1962](http://www.un.org/en/sc/documents/resolutions/1962.shtml)
+includes a table with a row for each resolution.
+
+![Screenshot of the UNSC resolutions from 1962]({{ page.root }}/fig/unscr-fragment.png)
+
+The last row excerpted above (and also shown in the intended CSV output) is
+encoded in HTML as:
+
+~~~
+…
+  <tr>
+    <td><a href="/en/ga/search/view_doc.asp?symbol=S/RES/174(1962)">S/RES/174 (1962)</a></td>
+    <td>Admission of new Members to the UN: Jamaica</td>
+  </tr>
+…
+~~~
+{: .output}
+
+When looking at such pages, we can see that the columns aren't labelled. We are
+expected to understand that the left column is some reference identifier or
+symbol for the resolution, and the right column is a title or topic.  Thus we
+interpret the visual presentation of the data, relying on our background
+knowledge. When we do not care to navigate around the site, we similarly are
+able to identify the navigation menus on the left and at the top and ignore it.
+Computers cannot make such interpretations unassisted.
+
+> ## Structured vs. unstructured data
 >
 > When presented with information, human beings are good at quickly categorizing it and extracting the data
 > that they are interested in. For example, when we look at a magazine rack, provided the titles are written
 > in a script that we are able to read, we can rapidly figure out the titles of the magazines, the stories they
-> contain, the language they are written in, etc. and we can probably also easily organize them by topic, 
+> contain, the language they are written in, etc. and we can probably also easily organize them by topic,
 > recognize those that are aimed at children, or even whether they lean toward a particular end of the
 > political spectrum. Computers have a much harder time making sense of such _unstructured_ data unless
 > we specifically tell them what elements data is made of, for example by adding labels such as
@@ -114,57 +114,54 @@ Alberta and list their names and caucus information.
 >
 {: .callout}
 
-Let's look now at the current list of members for the [UK House of Commons](https://www.parliament.uk/mps-lords-and-offices/mps/). 
+## The task
 
-![Screenshot of the UK House of Commons website]({{ page.root }}/fig/ukparl.png)
+Our task is to merge the data from all the UNSC resolution pages into a single,
+consistent and machine-readable format that will allow us to:
 
-This page also displays a list of names, political and geographical affiliation. There is a search box and
-a filter option, but no obvious way to download this information and reuse it.
+* count and plot how many resolutions were passed each year
+* count and plot how many pertained UN membership vs. security motions
+* search for resolutions pertaining to particular countries names
+* divide the statistics by geopolitical region (e.g. South America vs. East Asia)
+* periodically update our database as long as the web site maintains its current format
 
-Here is the code for this page:
+(We could potentially further enrich the database with the full digitised text
+of the resolutions, but this would require performing [Optical Character
+Recognition](http://en.wikipedia.org/wiki/Optical_character_recognition) since
+most of the resolutions are presented as PDFs of scanned paper prints.  We
+leave this as a further exercise for the student!)
 
-~~~
-(...)
-<table>
-    <tbody>
-        (...)
-        <tr id="ctl00_ctl00_(...)_trItemRow" class="first">
-            <td>Aberavon</td>
-            <td id="ctl00_ctl00_(...)_tdNameCellRight">
-                <a id="ctl00_ctl00_(...)_hypName" href="http://www.parliament.uk/biographies/commons/stephen-kinnock/4359">Kinnock, Stephen</a>(Labour)
-            </td>
-        </tr>
-        (...)
-    </tbody>
-</table>
-(...)
-~~~
-{: .output}
+**How can we do this?**
 
-We see that this data has been structured for displaying purposes (it is arranged in rows inside
-a table) but the different elements of information are not clearly labelled.
+We could try copy-pasting the table for each year into a spreadsheet, but this can
+quickly become impractical when faced with a large number of years, and wanting
+to update it frequently. Another resource may have more pages (monthly
+or weekly records) for similar archives.
 
-What if we wanted to download this dataset and, for example, compare it with the Canadian list of MPs
-to analyze gender representation, or the representation of political forces in the two groups?
-We could try copy-pasting the entire table into a spreadsheet or even manually
-copy-pasting the names and parties in another document, but this can quickly become impractical when
-faced with a large set of data. What if we wanted to collect this information for every country that
-has a parliamentary system?
+Fortunately, there are tools and techniques to automate at least part of the
+process, known as _web scraping_.
+Web scraping typically targets _one web site at a
+time_ to extract unstructured information and put it in a structured form for reuse.
 
-Fortunately, there are tools to automate at least part of the process. This technique is called
-_web scraping_. 
+Assuming that many other sites, or UN agencies, archive reports and resolutions
+through similar web pages, the same techniques (although perhaps not the same
+exact piece of software) can be used to extract their data.
 
->
-> "Web scraping (web harvesting or web data extraction) is a computer software technique of 
-> extracting information from websites."
-> (Source: [Wikipedia](https://en.wikipedia.org/wiki/Web_scraping))
->
+> ## Scraping robustly
+> This is but one instance of web scraping. It is interesting because the data is
+> apparently not already contained in a database on the UNSC web site. When we
+> come to scrape it, we will identify a number of quirks and inconsistencies that
+> are endemic to manually edited sites.  But quirks occur in web sites backed by
+> databases where, for instance, there may be multiple types of product and each
+> is presented differently; or some fields appear and disappear depending on the
+> object; or you want to be able to periodically update the database, but the web
+> site changes its design altogether. Among the major challenges in designing a
+> web scraper is building a system that is _robust to variation_, or where it is
+> easy to diagnose that the web scraper has broken.
+{: .callout}
 
-Web scraping typically targets one web site at a
-time to extract unstructured information and put it in a structured form for reuse.
-
-In this lesson, we will continue exploring the examples above and try different techniques to extract
-the information they contain. But before we launch into web scraping proper, we need to look
+In this lesson, we will continue exploring techniques to extract
+the information in the UNSC resolutions archive. But before we launch into web scraping proper, we need to look
 a bit closer at how information is organized within an HTML document and how to build queries to access
 a specific subset of that information.
 
