@@ -50,7 +50,7 @@ As useful as scraping is, there might be better options for the task. Choose the
 [Facebook API](https://developers.facebook.com/tools/explorer/), the [Twitter APIs](https://dev.twitter.com/rest/public) or the [YouTube comments API](https://developers.google.com/youtube/v3/docs/commentThreads/list).
 - For much larger needs, Freedom of information requests can be useful. Be specific about the formats required for the data you want.
 
-# Example: scraping the history of UN Security Council Resolutions
+# Example: a database of UN Security Council Resolutions
 
 In this lesson, we will extract the history of resolutions made by the United
 Nations Security Council (UNSC) as [found on its web
