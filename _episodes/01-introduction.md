@@ -15,7 +15,7 @@ keypoints:
 - "Web scraping is the process of automating the extraction of data from web sites."
 ---
 
-## What is web scraping?
+# What is web scraping?
 
 Web scraping is a technique for extracting information from websites. This can be done manually
 but it is usually faster, more efficient and less error-prone to automate the task. 
@@ -50,7 +50,7 @@ As useful as scraping is, there might be better options for the task. Choose the
 [Facebook API](https://developers.facebook.com/tools/explorer/), the [Twitter APIs](https://dev.twitter.com/rest/public) or the [YouTube comments API](https://developers.google.com/youtube/v3/docs/commentThreads/list).
 - For much larger needs, Freedom of information requests can be useful. Be specific about the formats required for the data you want.
 
-## Example: scraping the history of UN Security Council Resolutions
+# Example: scraping the history of UN Security Council Resolutions
 
 In this lesson, we will extract the history of resolutions made by the United
 Nations Security Council (UNSC) as [found on its web
@@ -133,13 +133,13 @@ leave this as a further exercise for the student!)
 
 **How can we do this?**
 
-We could try copy-pasting the table for a year into a spreadsheet, but this can
+We could try copy-pasting the table for each year into a spreadsheet, but this can
 quickly become impractical when faced with a large number of years, and wanting
-to update it frequently. Another similar resource may have more pages (monthly
+to update it frequently. Another resource may have more pages (monthly
 or weekly records) for similar archives.
 
 Fortunately, there are tools and techniques to automate at least part of the
-process. This technique is called _web scraping_.
+process, known as _web scraping_.
 Web scraping typically targets _one web site at a
 time_ to extract unstructured information and put it in a structured form for reuse.
 
