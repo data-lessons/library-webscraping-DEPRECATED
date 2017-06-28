@@ -566,6 +566,20 @@ combinators to get from those easy-to-identify elements to the target elements.
 > {: .solution}
 {: .challenge}
 
+# Advanced `:nth-...` selectors
+
+We presented the `:nth-child` and `:nth-of-type` selectors, but we only showed that you can place a number inside their parentheses, like `:nth-child(2)`. However, you can put formulas in the parentheses:
+
+* `:nth-child(2n)` will select all even children
+* `:nth-child(2n + 1)` will select all odd children
+* `:nth-child(3n)` will select every third child
+* `:nth-child(n + 2)` will select every child except for the first
+* `:nth-child(an + b)` for any integers _a_ and _b_ will start selecting the _b_th child and select every _a_th child after that
+
+> ## Exercise
+> Select every second `<blockquote>` from the body of this page in the browser console. Experiment with other formulas.
+{: .challenge}
+
 # Limitations of CSS Selectors
 
 A key limitation of CSS Selectors (prior to level 4) is that you cannot generally select an element based on _what it contains_. (This limitation my derive from the assumption that the author of a CSS selector was usually able to modify the markup to engineer simple selectors. This may be a reasonable assumption when selectors are used for styling a page or making it interactive.)
@@ -607,7 +621,7 @@ Viewing the HTML source of a page may help you design an appropriate selector. A
 * Hovering your mouse cursor over an HTML element will highlight its position in the document.
 * Above or below the HTML (depeding on web browser) you can see the list of elements (their tag names, IDs and classes) from the root to the selected element shown as basic CSS selectors.
 
-Browser extensions such as [CSS Selector Helper for Chrome](https://chrome.google.com/webstore/detail/gddgceinofapfodcekopkjjelkbjodin) may further assist in developing a specific selector.
+Browser extensions such as [Selector Gadget](http://selectorgadget.com) or [CSS Selector Helper for Chrome](https://chrome.google.com/webstore/detail/gddgceinofapfodcekopkjjelkbjodin) may further assist in developing a specific selector.
 
 > ## Source vs computed DOM
 > What you see in the element / DOM inspector, and what `document.querySelectorAll` evaluates CSS selectors on, need not be identical to what you see in View Source.  The DOM (Document Object Model) is the version of the node tree computed by the browser after reading the HTML source, but also after running any _scripts_ associated with the page.  These scripts can modify the computed node tree in arbitrary ways, including loading content from other places and changing the page in response to interaction. Another reason the DOM may differ from the raw HTML is if the raw HTML is invalid: the web browser (or any HTML parser) needs to make interpretive decisions about where a missing closing tag of an element should be placed, or whether a closing tag lacking an opening tag like (`</p>`) should be treated as empty (`<p></p>`) or deleted altogether.
