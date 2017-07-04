@@ -1,7 +1,7 @@
 ---
-title: "Conclusion"
+title: "Discussion"
 teaching: 15
-exercises: 15
+exercises: 0
 questions:
 - "When is web scraping OK and when is it not?"
 - "Is web scraping legal? Can I get into trouble?"
@@ -17,14 +17,13 @@ keypoints:
 - "Be nice. In doubt, ask."
 ---
 
-Now that we have seen several different ways to scrape data from websites and are
-ready to start working on potentially larger projects, we may ask ourselves whether
+Now that we have seen several ways to scrape data from websites,
+we may ask ourselves whether
 there are any legal implications of writing a piece of computer code that downloads
 information from the Internet.
 
-In this section, we will be discussing some of the issues to be aware of when
-scraping websites, and we will establish a [code of conduct (below)](#web-scraping-code-of-conduct)
-to guide our web scraping projects.
+In this section, we will discuss some issues to be aware of when
+scraping websites, and will establish a [scraping code of conduct (below)](#web-scraping-code-of-conduct).
 
 > ## This section does not constitute legal advice
 > 
@@ -55,7 +54,7 @@ from accessing the site during that time, or even cause the server to run out of
 In fact, this is such an efficient way to disrupt a web site that hackers are often doing it on purpose.
 This is called a [Denial of Service (DoS) attack](https://en.wikipedia.org/wiki/Denial-of-service_attack).
 
-Since DoS attacks are unfortunately a common occurence on the Internet, modern web servers include
+Since DoS attacks are unfortunately a common occurrence on the Internet, modern web servers include
 measures to ward off such illegitimate use of their resources. They are watchful for large amounts
 of requests appearing to come from a single computer or IP address, and their first line of defense often involves
 refusing any further requests coming from this IP address.
@@ -64,34 +63,31 @@ A web scraper, even one with legitimate purposes and no intent to bring a websit
 similar behaviour and, if we are not careful, result in our computer being banned from accessing
 a website.
 
-The good news is that a good web scraper, such as Scrapy, recognizes that this is a risk and includes
+The good news is that a good web scraping tool, such as Scrapy, recognizes that this is a risk and includes
 measures to prevent our code from appearing to launch a DoS attack on a website. This is mostly
 done by inserting a random delay between individual requests, which gives the target server enough
 time to handle requests from other users between ours. 
 
 This is Scrapy's default behaviour, and it should prevent most scraping projects from ever causing problems.
 To be on the safe side, however, it is good practice to limit the number of pages we are scraping
-while we are still writing and debugging our code. This is why in the previous section, we imposed
-a limit of five pages to be scraped, which we only removed when we were reasonably certain the scraper
-was working as it should.
+while we are still writing and debugging our scraper.
 
-Limiting requests to a particular domain, by using Scrapy's `allowed_domains` property is another
-way to make sure our code is not going to start scraping the entire Internet by mistake.
+Checking that our scraper stays on task, for instance by using Scrapy's `allowed_domains` setting to only scrape data from specified domains, is another way to make sure our code is not going to start scraping the entire Internet by mistake.
 
-Thanks to the defenses web servers use to protect themselves against DoS attacks and Scrapy's
-measure to avoid inadvertently launching such an attack, the risks of causing trouble is limited.
+Thanks to the defences web servers use to protect themselves against DoS attacks and scraping tools'
+measures to avoid inadvertently launching such an attack, the risks of causing trouble is limited.
 
 ## Don't steal: Copyright and fair use
 
-It is important to recognize that in certain circumstances web scraping _can_ be illegal. If the terms
+In certain circumstances web scraping _can_ be illegal. If the terms
 and conditions of the web site we are scraping specifically prohibit downloading
-and copying its content, then we could be in trouble for scraping it.
+and copying its content, then we could get in trouble for scraping it.
 
 In practice, however, web scraping is a tolerated practice, provided reasonable
 care is taken not to disrupt the "regular" use of a web site, as we have seen above.
 
 In a sense, web scraping is no different than using a web browser to visit a web page,
-in that it amounts to using computer software (a browser vs a scraper) to acccess
+in that it amounts to using computer software (a browser vs a scraper) to access
 data that is publicly available on the web.
 
 In general, if data is publicly available (the content that is being scraped is not
@@ -99,10 +95,10 @@ behind a password-protected authentication system), then it is OK to scrape it,
 provided we don't break the web site doing so. What is potentially
 problematic is if the scraped data will be shared further. For example, downloading
 content off one website and posting it on another website (as our own), unless
-explicitely permitted, would constitute copyright violation and be illegal.
+explicitly permitted, would constitute copyright violation and be illegal.
 
 However, most copyright legislations recognize cases in which reusing some, possibly
-copyrighted, information in an aggregate or derivative format is considered
+copyrighted, information in an aggregate or derivative form is considered
 "fair use". In general, unless the intent is to pass off data as our own, copy
 it word for word or trying to make money out of it, reusing publicly available
 content scraped off the internet is OK.
@@ -123,21 +119,28 @@ will help you sort out the legal aspects of your project. The
 university library is often the best place to start looking for help on
 copyright.
 
+### Robots Exclusion Standard
+
+If your scraper involves visiting large portions of a web site, it may be
+appropriate to adhere to the [robots.txt standard](https://en.wikipedia.org/wiki/Robots.txt)
+which allows web scrapers to specify parts of their site that should not be
+indexed by web search.
+
+`robots.txt` has no legal standing, but it is a matter of etiquette that,
+when broken, could lead a site administrator to block your scraper.
+
 ## Be nice: ask and share
 
-Depending on the scope of your project, it might be worthwhile to consider asking
+Depending on the scope of your project, it might be worthwhile asking
 the owners or curators of the data you are planning to scrape if they have it
-already available in a structured format that could suit your project. If your
-aim is do use their data for research, or to use it in a way that could potentially
-interest them, not only it could save you the trouble of writing a
-web scraper, but it could also help clarify straight away what you can and cannot do
-with the data.
+available in a structured format. Not only could this save you the trouble of 
+writing a scraper, but it might help clarify straight away what you can and cannot do
+with the data, or if your work is of interest to them.
 
 On the other hand, when you are publishing your own data, as part of a research project,
-documentation or a public website, you might want to think about whether someone might
-be interested in getting your data for their own project. If you can, try to provide
-others with a way to download your raw data in a structured format, and thus save
-them the trouble to try and scrape your own pages!
+documentation or a public website, you might want to think about the most helpful way
+to share it: try to provide others with a way to download your raw data in a structured
+format, and thus save them the trouble of scraping your own pages!
 
 ## Web scraping code of conduct
 
@@ -157,7 +160,7 @@ be fine.
    investigating something like that.
 3. __Check your local legislation.__ For example, certain countries have laws protecting
    personal information such as email addresses and phone numbers. Scraping such information,
-   even from publicly avaialable web sites, can be illegal (e.g. in Australia).
+   even from publicly available web sites, can be illegal (e.g. in Australia).
 4. __Don't share downloaded content illegally.__ Scraping for personal purposes is usually
    OK, even if it is copyrighted information, as it could fall under the fair use provision
    of the intellectual property legislation. However, sharing data for which you don't
@@ -171,7 +174,7 @@ be fine.
    requests per second. If you are writing a recursive scraper (i.e. that follows
    hyperlinks), test it on a smaller dataset first to make sure it does what it is
    supposed to do. Adjust the settings of your scraper to allow for a delay between
-   requests. By default, Scrapy uses conservative settings that should minimize this risk.
+   requests.
 7. __Publish your own data in a reusable way.__ Don't force others to write their own
    scrapers to get at your data. Use open and software-agnostic formats (e.g. JSON, XML),
    provide metadata (data about your data: where it came from, what it represents, how
@@ -181,9 +184,9 @@ be fine.
 ## Going further
 
 This lesson only provides an introduction to the practice of web scraping and highlights
-some of the tools available. Scrapy has many more features than those mentioned in the
-previous section, be sure to refer to its [full documentation](https://doc.scrapy.org/en/latest/)
-for details.
+some of the tools available. You might want to try out a commercial visual scraper or
+an open-source scraping framework (such as [Scrapy](https://doc.scrapy.org/en/latest/) in Python)
+in the programming language of your choice. If you're not sure what to scrape, a practice site such as [toscrape.com](http://toscrape.com) will provide some further challenges.
 
 Happy scraping!
 
@@ -209,5 +212,5 @@ Happy scraping!
   followed indepentently. This lesson is heavily inspired by Software Carpentry.
 * [Data Carpentry](http://www.datacarpentry.org/) is a sister organisation of Software Carpentry
   focused on the fundamental data management skills required to conduct research.
-* [Library Carpentry](https://librarycarpentry.github.io/) is another Software Carpentry spinoff
+* [Library Carpentry](https://librarycarpentry.github.io/) is another Software Carpentry spin-off
   focused on software skills for librarians.
