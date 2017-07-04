@@ -27,12 +27,11 @@ in the data.
 > and the [Document Object Model](https://en.wikipedia.org/wiki/Document_Object_Model) (DOM).
 >  
 > The first part of this lesson will use browser extensions to introduce the concepts of web scraping
-> as well as introduce the XPath syntax for selecting elements on a web page
+> as well as introduce the CSS selector syntax for selecting elements on a web page
 > and requires no further specific knowledge.
 > The second part will introduce the use of specialized libraries to scrape websites by writing
 > custom computer programs and will require some familiarity with the 
-> [Python programming language](https://swcarpentry.github.io/python-novice-inflammation/)
-> and [object-oriented programming](https://en.wikipedia.org/wiki/Object-oriented_programming).
+> [Python programming language](https://swcarpentry.github.io/python-novice-inflammation/).
 >
 {: .prereq}
 
