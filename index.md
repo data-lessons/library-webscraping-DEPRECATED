@@ -43,7 +43,7 @@ Refer to the [Setup](setup/) section to install the required software to follow 
 > ## Under development
 >
 > Please note that the contents of this lesson are still being actively developed. Any feedback is
-> appreciated, please do not hesitate to contact [the maintainers](https://gitter.im/LibraryCarpentry/) or contribute
-> to the lesson by [forking it on GitHub](https://github.com/data-lessons/library-webscraping/).
+> appreciated, please do not hesitate to contact [the maintainers]({{ site.contact }}) or contribute
+> to the lesson by [forking it on GitHub]({{ site.github.repository_url }}).
 >
 {: .callout}
