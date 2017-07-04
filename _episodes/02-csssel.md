@@ -1,7 +1,7 @@
 ---
 title: "Selecting content on a web page with CSS selectors"
 teaching: 30
-exercises: 15
+exercises: 20
 questions:
 - "How can I select a specific element on web page?"
 - "What is a CSS Selector and how can I use it?"
@@ -32,7 +32,7 @@ content you seek.  Several tools have been designed for succinctly describing
 patterns that can be matched to document structure so that selected content can
 be efficiently extracted.  The most important for web scraping are:
 
-* Regular expression: These specify portions of strings of characters (e.g.
+* Regular expression: These select portions of strings of characters (e.g.
   text, a URL). They can be used to identify, for instance, typical forms of
   date (`yyyy-mm-dd`, `d/m/yyyy`, etc.) or of an email address, or whether a URL is
   the kind of URL you want to download and scrape.
@@ -40,9 +40,9 @@ be efficiently extracted.  The most important for web scraping are:
   They can be very specific about which nodes to include or exclude.
 * CSS selectors: These serve a similar function to XPath, in selecting parts of
   an HTML document, but were designed for web development (for applying styles
-  such as colour to parts of a document) and so are more commonly known, but
-  also limited in what they can express relative to XPath. Every CSS selector
-  can be translated into an equivalent XPath expression.
+  such as colour to parts of a document). As such, they are more popular, but
+  are limited in what they can express relative to XPath. Every CSS selector
+  can be translated into an equivalent XPath expression, but not vice-versa.
 
 We focus on CSS selectors for their simplicity, although a parallel [lesson covering XPath]({{page.root}}/xpath) is available.
 
@@ -50,20 +50,19 @@ We focus on CSS selectors for their simplicity, although a parallel [lesson cove
 
 When you view a page in your web browser, this usually involves downloading content encoded in HTML. The browser then renders this content visually.
 
-XML and HTML are _markup languages_. This means that they use a set of tags or rules to organise and provide
-information about the data they contain. This structure helps to automate processing, editing, formatting,
+XML and HTML are closely related _markup languages_.
+In fact HTML is like a dialect of XML specialised for structuring web pages.
+This means that they use a set of tags or rules to organise and provide
+information about their content. This structure helps to automate processing, editing, formatting,
 displaying, printing, etc. that information.
 
-XML documents store data in plain text format. This provides a software- and hardware-independent way of storing,
-transporting, and sharing data. XML format is an open format, meant to be software agnostic. You can
-open an XML document in any text editor and the data it contains will be shown as it is meant to be represented.
-This allows for exchange between incompatible systems and easier conversion of data.
+XML documents store data in plain text format, making it relatively easy to harness XML data without very specialised knowledge or tools.
+But the structure of XML demands techniques for pinpointing content within it.
 
 > ## XML and HTML
 >
-> Note that HTML and XML have a very similar structure, which is why XPath and CSS selectors can be used almost interchangeably to
+> HTML and XML have a very similar structure, which is why XPath and CSS selectors can be used almost interchangeably to
 > navigate both HTML and XML documents.
-> In a loose sense, HTML is like a particular dialect of XML.
 >
 {: .callout}
 
@@ -115,12 +114,11 @@ A popular way to represent the structure of an XML or HTML document is the _node
 
 We use the terms _parent_, _child_ and _sibling_ to describe the hierarchical relationships between nodes:
 
-* The top node is called the *root* (or *root node*).
-* Every node has exactly one *parent*, except the root (which has no parent).
-* An element (one kind of node) node can have zero, one or several *children*. Attribute and text nodes have no children.
+* The top node is called the *root* (or *root node*). `<catfood>` is the root here.
+* Every node has exactly one *parent*, except the root (which has no parent). The `<manufacterer>` node's parent is the `<catfood>` node.
+* An element (one kind of node) node can have zero, one or several *children*. Attribute and text nodes have no children. `<address>` has two child nodes, but no child elements.
 * *Siblings* are nodes with the same parent.
-* The sequence of connections from node to node is called a *path*.
-* A node's children and its children's children, etc., are called its *descendants*. Similarly, a node's parent and its parent's parent, etc., are called its ancestors.
+* A node's children and its children's children, etc., are called its *descendants*. Similarly, a node's parent and its parent's parent, etc., are called its ancestors. Except for the root node, all nodes are descendants of the root node.
 
 ## Common HTML elements
 
@@ -144,32 +142,32 @@ See the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web
 
 # CSS Selectors
 
-Using CSS Selectors is similar to using advanced search in a library catalogue, where the structured nature of bibliographic information allows us to specify which metadata fields to query. For example, if we want to find books *about* Shakespeare but not works *by* him, we can limit our search function to the `subject` field only.
+Using CSS Selectors is similar to using advanced search in a library catalogue, where the structured nature of bibliographic information allows us to specify which metadata fields to query. For example, if we want to find books *about* Shakespeare but not works *by* him, we can limit our search to the `subject` field only.
 
-When we use CSS Selectors, we do not need to know in advance what the content we want looks like (as we would with regular expressions, where we need to know the pattern of the data). Since HTML documents are structured as a network of nodes, CSS Selectors makes use of that structure to navigate through the nodes to select the data we want. We just need to know in which nodes within an HTML file the content we want to find resides.
+When we use CSS Selectors, we do not need to know in advance what the content we want looks like (as we might with regular expressions, where specify the pattern of the data). Since HTML documents are structured as a network of nodes, CSS Selectors make use of that structure to navigate through the nodes and select the data we want. We just need to know which nodes in an HTML file contain what we want to extract.
 
-A CSS Selector is, somewhat like a search query, a short piece of text that describes which nodes are sought. A CSS Selector can be *evaluated* on a document (or on each of many documents): the CSS Selector evaluator follows the instructions implied by the selector, finds the sought nodes in the document and returns them.
+A CSS Selector (as with an XPath selector) is, somewhat like a search query, a short piece of text that describes which nodes are sought. A CSS Selector can be *evaluated* on a document (or on each of many documents): the evaluator follows the instructions implied by the selector, finds the sought nodes in the document and returns them to the program that requested them.
 
-Here are some examples of the sort of things one can express with CSS selectors (and XPath for comparison) based on the document fragments above above:
+Here are some examples of the sort of things one can express with CSS selectors (and XPath for comparison) based on the document fragments above:
 
 | CSS selector         | XPath expression           | Description |
 |----------------------|----------------------------|-------------|
 | `address`            | `//address`                | Get every `address` element (and its contents) in the document |
 | `catfood address`    | `//catfood//address`       | Get every `address` element somewhere inside a `catfood` element |
-| `catfood[type=basic]`| `//catfood[@type='basic']` | Get every `catfood` element that has a `type` element with value "basic" |
+| `catfood[type=basic]`| `//catfood[@type='basic']` | Get every `catfood` element that has a `type` attribute with value "basic" |
 
 CSS selectors can only retrieve element nodes. Text and attributes need to be extracted outside of the CSS selector expression.
 
 ## Finding elements with CSS selectors
 
-CSS selector expressions consist of *basic selectors* which describe the properties of elements targeted for extraction (e.g. _has tag name `address`_ is described as `address`). Sometimes we only want an element extracted if it appears in a particular context (e.g. _appears somewhere inside a `catfood` element_). We can describe valid contexts for the extracted elements by forming a basic selector for the context (`catfood`) and combining the selector for the context and the target (`catfood address`).
+CSS selector expressions consist of *basic selectors* which describe the properties of elements targeted for extraction (e.g. _has tag name `address`_ is described as `address`). Sometimes we only want an element extracted if it appears in a particular context (e.g. _appears somewhere inside a `<catfood>` element_). We can describe valid contexts for the extracted elements by forming a basic selector for the context (`catfood`) and combining the selector for the context and the target (`catfood address`).
 
 Common basic selectors are:
 
 | Basic selector      | Kind               | Description                                                                   |
 |---------------------|--------------------|-------------------------------------------------------------------------------|
 | `*`                 | Universal selector | Matches all elements                                                          |
-| `name`              | Type selector      | For any given _name_, matches all elements of that name.                      |
+| `name`              | Type selector      | For any given _name_, matches all elements with that tag name.                |
 | `.name`             | Class selector     | Matches all elements whose `class` attribute includes the word _name_.        |
 | `#name`             | ID selector        | Matches all elements whose `id` attribute is exactly _name_.                  |
 | `[attr]`            | Attribute selector | Matches all elements having an attribute named _attr_.                        |
@@ -214,9 +212,9 @@ Note that _C_ can be an arbitrarily complex selector, perhaps combining many bas
 > | `Address`                              | Yes                      |
 > | `catfood address`                      | Yes                      |
 > | `catfood[type=basic] address`          | Yes                      |
-> | `catfood[type="basic"] address`        | Yes                      |
-> | `catfood[type=premium] address`        | No                       |
 > | `catfood[type=BASIC] address`          | No!                      |
+> | `catfood[type=premium] address`        | No                       |
+> | `catfood[type="basic"] address`        | Yes                      |
 > | `catfood > address`                    | No                       |
 > | `catfood > * > address`                | Yes                      |
 > | `catfood > :nth-child(2) > address`    | Yes                      |
@@ -225,7 +223,6 @@ Note that _C_ can be an arbitrarily complex selector, perhaps combining many bas
 > | `catfood > :nth-of-type(2) > address`  | No                       |
 > | `catfood > manufacturer + * > address` | Yes                      |
 > | `catfood > date + * > address`         | No                       |
-> | `catfood > date ~ * > address`         | Yes                      |
 > | `catfood > date ~ * > address`         | Yes                      |
 > | `catfood address.USA`                  | Yes                      |
 > | `catfood address.usa`                  | Yes                      |
@@ -246,7 +243,6 @@ Refer to the [Mozilla Developer Network](https://developer.mozilla.org/en-US/doc
 >
 {: .challenge}
 
-
 ## Evaluating CSS selectors in a web browser
 
 We will use the HTML code that describes this very page you are reading as an example. By default, a web browser
@@ -263,8 +259,9 @@ a web page.
 > Another tab should open with the raw HTML that makes this page. See if you can locate its various elements, and
 > this challenge box in particular.
 >
+> Another way to view the HTML node structure of the page is to right click the page and choose "Inspect" or "Inspect Element". Note: this can differ from the HTML structure in the source code, because of how the browser processes the source HTML.
+>
 {: .challenge}
-
 
 > ## Developer tools in the Safari browser
 >
@@ -298,12 +295,12 @@ Say we wanted to tell a web scraper to look for the title of this page, we would
 _path_ the scraper would need to follow as it navigates through the HTML content of the page to reach the `title`
 element. CSS selectors allow us to do that.
 
-We can evaluate CSS selectors directly from within all major modern browsers, by enabling the built-in JavaScript console.
+We can evaluate CSS selectors directly from within all major modern browsers, by using the built-in JavaScript console.
 
 > ## Display the console in your browser
 >
-> * In Firefox, use to the *Tools > Web Developer > Web Console* menu item.
 > * In Chrome, use the *View > Developer > JavaScript Console* menu item.
+> * In Firefox, use to the *Tools > Web Developer > Web Console* menu item.
 > * In Safari, use the *Develop > Show Error Console* menu item. If your Safari browser doesn't have a Develop menu,
 >   you must first enable this option in the Preferences, see above.
 >
@@ -337,10 +334,10 @@ document.querySelectorAll("html > head > title")[0]
 ~~~
 {: .source}
 
-Adding `.text` will retrieve the text from within the returned element. (Note that this `.text` notation looks deceptively similar to the class selector notation.)
+Adding `.innerText` will retrieve the text from within the returned element. (Note that this `.innerText` notation looks deceptively similar to the class selector notation.)
 
 ~~~
-document.querySelectorAll("html > head > title")[0].text
+document.querySelectorAll("html > head > title")[0].innerText
 ~~~
 {: .source}
 
@@ -376,7 +373,7 @@ Using this syntax, CSS selectors allow us to specify the exact _path_ to a set o
 > > ~~~
 > > {: .output}
 > >
-> > Variants include:
+> > Alternatives include:
 > >
 > > * `document.querySelectorAll('html > body > div > blockquote')[0]`
 > > * `document.querySelectorAll('html > body > div > blockquote.objectives')`
@@ -446,6 +443,10 @@ which returns
 ~~~
 {: .output}
 
+In principle, `id` attributes in HTML are unique on a page. This means that if you know the `id`
+of the element you are looking for, you should be able to construct an expression that looks for this value
+without having to worry about where in the node tree the target element is located.
+
 > ## Select the "Matching patterns" title by ID
 > Sometimes we can select an element by the order in which it appears, using selectors like
 > `:nth-child(n)` and `:nth-of-type(n)`. But what if we want to match a particular element
@@ -456,9 +457,6 @@ which returns
 >
 > Tips:
 >
-> * In principle, `id` attributes in HTML are unique on a page. This means that if you know the `id`
->   of the element you are looking for, you should be able to construct an expression that looks for this value
->   without having to worry about where in the node tree the target element is located.
 > * Look at the source of the page or use the "Inspect element" function of your browser to see what
 >   other information would enable us to uniquely identify that element.
 > * The syntax for selecting an element like `<div id="mytarget">` is `#mytarget`.
@@ -506,14 +504,11 @@ combinators to get from those easy-to-identify elements to the target elements.
 >
 > Tips:
 >
-> * In principle, `id` attributes in HTML are unique on a page. This means that if you know the `id`
->   of the element you are looking for, you should be able to construct an expression that looks for this value
->   without having to worry about where in the node tree the target element is located.
-> * The syntax for selecting an element like `<div id="mytarget">` is `#mytarget`.
 > * The syntax to select the siblings of context elements is `context + target`
+> * Since you don't have any basic selector attributes for the target, you might use the universal selector (`*`)
 >
 > > ## Solution
-> > Let's have a look at the HTML code of this page, around this challenge box (using the "View Source" option)
+> > Let's have a look at the HTML code of this page, around this challenge box (using the "View Source" or "Inspect Element" option)
 > > in our browser). The code looks something like this:
 > >
 > > ~~~
@@ -559,7 +554,7 @@ combinators to get from those easy-to-identify elements to the target elements.
 > > | `#...`| Find by ID (anywhere in the document)... |
 > > | `+ *`| Get all the siblings of the preceding context |
 > >
-> > By hovering on the object returned by your XPath query in the console, your browser may helpfully highlight
+> > By hovering your mouse cursor over the object returned by your query in the console, your browser may helpfully highlight
 > > that object in the document, enabling you to make sure you got the right one:
 > >
 > > ![Hovering over a resulting node in Firefox]({{ page.root }}/fig/firefox-hover.png)
@@ -571,13 +566,34 @@ combinators to get from those easy-to-identify elements to the target elements.
 We presented the `:nth-child` and `:nth-of-type` selectors, but we only showed that you can place a number inside their parentheses, like `:nth-child(2)`. However, you can put formulas in the parentheses:
 
 * `:nth-child(2n)` will select all even children
-* `:nth-child(2n + 1)` will select all odd children
+* `:nth-child(2n+1)` will select all odd children
 * `:nth-child(3n)` will select every third child
-* `:nth-child(n + 2)` will select every child except for the first
-* `:nth-child(an + b)` for any integers _a_ and _b_ will start selecting the _b_th child and select every _a_th child after that
+* `:nth-child(n+2)` will select every child except for the first
+* `:nth-child(an+b)` for any integers _a_ and _b_ will start selecting the _b_th child and select every _a_th child after that
 
-> ## Exercise
-> Select every second `<blockquote>` from the body of this page in the browser console. Experiment with other formulas.
+`:nth-last-child` and `:nth-last-of-type` parallel the above pseudo-selectors, but their formulas match from last to first, rather than first to last.
+
+> ## Challenge: formulas in selectors
+> 1. Select the headline `<h2>` of every second `<blockquote>` from the body of this page in the browser console.
+> 2. Select the headline `<h2>` of all but the first and the last `<blockquote>` from the body of this page in the browser console.
+>
+> > ## Solution
+> > 1. `document.querySelectorAll(".container > blockquote:nth-of-type(2n) > h2")`
+> > 2. `document.querySelectorAll(".container > blockquote:nth-of-type(n+2):nth-last-of-type(n+2) > h2")`
+> >
+> > Confirm that the right number of elements is returned with, for instance:
+> > ~~~
+> > all_blockquotes_count = document.querySelectorAll(".container > blockquote > h2").length
+> > selected_blockquotes_count = document.querySelectorAll(".container > blockquote:nth-of-type(n+2):nth-last-of-type(n+2) > h2").length
+> > all_blockquotes_count - selected_blockquotes_count
+> > ~~~
+> > {: .source}
+> > Expected result:
+> > ~~~
+> > 2
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 # Limitations of CSS Selectors
@@ -607,9 +623,10 @@ document.querySelectorAll("#select-this-challenge-box-text")[0].parentNode
 
 XPath is able to select on the basis of descendants. Unlike CSS it is also able to:
 
-* select just the first (or any other offset) of a set of elements (`:nth-child` and `:nth-of-type` can only select the first with respect to a parent)
-* return the value of an attribute on a matched element
-* return the text contained by matched elements
+* select just the first (or any other offset) of a set of elements. (`:nth-child` and `:nth-of-type` can only select the first with respect to a parent.)
+* select elements on the basis of the text they contain.
+* return the value of an attribute on a matched element.
+* return the text contained by matched elements.
 
 These too require a general-purpose programming language to solve when using CSS selectors.
 
@@ -633,5 +650,7 @@ Browser extensions such as [Selector Gadget](http://selectorgadget.com) or [CSS 
 
 # References
 
+* [W3Schools: CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)
+* [W3Schools: HTML elements](https://www.w3schools.com/html/html_elements.asp)
 * [W3Schools: JavaScript HTML DOM Navigation](http://www.w3schools.com/js/js_htmldom_navigation.asp)
-* TODO
+* [Chrome devtools overview](https://developer.chrome.com/devtools)
