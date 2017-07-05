@@ -63,16 +63,16 @@ A web scraper, even one with legitimate purposes and no intent to bring a websit
 similar behaviour and, if we are not careful, result in our computer being banned from accessing
 a website.
 
-The good news is that a good web scraping tool, such as Scrapy, recognizes that this is a risk and includes
+The good news is that good web scraping tools recognize that this is a risk and include
 measures to prevent our code from appearing to launch a DoS attack on a website. This is mostly
 done by inserting a random delay between individual requests, which gives the target server enough
 time to handle requests from other users between ours. 
 
-This is Scrapy's default behaviour, and it should prevent most scraping projects from ever causing problems.
-To be on the safe side, however, it is good practice to limit the number of pages we are scraping
-while we are still writing and debugging our scraper.
+It is also a good idea to avoid scraping many pages repeatedly in a short period of time.
+So, for instance, while still writing and debugging a scraper, it is good practice to limit the number of pages we are scraping.
+Or, once we know which pages contain the data we need, we can download all of them once, and develop a scraper for the specific data we need on the downloaded copies.
 
-Checking that our scraper stays on task, for instance by using Scrapy's `allowed_domains` setting to only scrape data from specified domains, is another way to make sure our code is not going to start scraping the entire Internet by mistake.
+Checking that our scraper stays on task, for instance by checking that we never download a URL on an unfamiliar site, is another way to make sure our code is not going to start scraping the entire Internet by mistake.
 
 Thanks to the defences web servers use to protect themselves against DoS attacks and scraping tools'
 measures to avoid inadvertently launching such an attack, the risks of causing trouble is limited.
