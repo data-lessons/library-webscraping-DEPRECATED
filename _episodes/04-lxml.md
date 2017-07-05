@@ -32,7 +32,7 @@ Here is what we have learned so far:
 * We can look at the HTML source code of a page to find how target elements are structured and
   how to select them.
 * We can use the browser console to try out XPath or CSS selectors on a live site.
-* We can use visual scrapers to handle some basic scraping tasks. These help determine an appropriate selector, and may also perform spidering.
+* We can use visual scrapers to handle some basic scraping tasks. These help determine an appropriate selector, and may be able to navigate through a web site collecting data.
 
 This is quite a toolset already, and it's probably sufficient for a number of use cases, but there are
 limitations in using the tools we have seen so far.
