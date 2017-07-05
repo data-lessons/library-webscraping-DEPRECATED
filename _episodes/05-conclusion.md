@@ -69,7 +69,7 @@ done by inserting a random delay between individual requests, which gives the ta
 time to handle requests from other users between ours. 
 
 It is also a good idea to avoid scraping many pages repeatedly in a short period of time.
-So, for instance, while still writing and debugging a scraper, it is good practice to limit the number of pages we are scraping.
+So, for instance, while still writing and debugging a scraper, it is good practice to limit the number of pages we scrape.
 Or, once we know which pages contain the data we need, we can download all of them once, and develop a scraper for the specific data we need on the downloaded copies.
 
 Checking that our scraper stays on task, for instance by checking that we never download a URL on an unfamiliar site, is another way to make sure our code is not going to start scraping the entire Internet by mistake.
