@@ -19,7 +19,7 @@ keypoints:
 - "Relationships between nodes are: parent, child, descendant, sibling."
 - "CSS selectors are constructed by specifying properties of the targets combined with properties of their context."
 - "IDs, classes and tag names should be preferred as properties for extraction."
-- "CSS selectors can be evaluated using the `document.querySelector()` function."
+- "CSS selectors can be evaluated using the `document.querySelectorAll()` function."
 ---
 Before we delve into web scraping proper, we will first spend some time introducing
 some of the techniques that are required to indicate exactly what should be
