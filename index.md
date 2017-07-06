@@ -21,7 +21,7 @@ in the data.
 
 > ## Prerequisites
 >
-> As webscraping is a technique to extract data from web pages, it requires some understanding of
+> As web scraping is a technique to extract data from web pages, it requires some understanding of
 > the technologies that are used to display information on the web. 
 > This lesson therefore assumes that learners will have some familiarity with [HTML](https://en.wikipedia.org/wiki/HTML)
 > and the [Document Object Model](https://en.wikipedia.org/wiki/Document_Object_Model) (DOM).

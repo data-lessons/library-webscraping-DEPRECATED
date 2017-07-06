@@ -1,5 +1,5 @@
 ---
-title: "Introduction: What is web scraping?"
+title: "What is web scraping?"
 teaching: 10
 exercises: 0
 questions:
@@ -70,9 +70,9 @@ Computers do not have this intuition.
 
 Web scraping therefore involves:
 
-* telling a computer how to navigate through a web site to find required
-  content (sometimes called *spidering*); and
-* providing *patterns* with which the computer can identify and extract
+* telling a computer how to __navigate__ through a web site to find required
+  content (sometimes called ___spidering___); and
+* providing ___patterns___ with which the computer can identify and __extract__
   required content.
 
 ### Not web scraping: structured content on the web
@@ -81,7 +81,7 @@ There are, however, many forms of structured content on the web, which are
 (ideally) already *machine-readable* (although they may still need
 transformation to fit into your database/format of choice). These include:
 
-* Data downloads: some web sites provide their content in structured forms.
+* __Data downloads__: some web sites provide their content in structured forms.
   Some names for data formats include Excel, CSV, RSS, XML and JSON.
 * APIs: many major sources and distributors of content provide software
   developers with a [web-based Application Programming
@@ -90,13 +90,13 @@ transformation to fit into your database/format of choice). These include:
   other in design, so some new development tends to be required to get data
   from each one. Most require some authentication like a username and password
   before access is granted (even when it is granted for free).
-* semantic web knowledge bases: web sites providing structured knowledge, of
+* __semantic web knowledge bases__: web sites providing structured knowledge, of
   which [WikiData](http://wikidata.org) is a good example. These tend to be
   structured as [OWL](https://en.wikipedia.org/wiki/Web_Ontology_Language)
   ontologies, and can often be queried through
   [SPARQL](https://en.wikipedia.org/wiki/SPARQL) endpoints or downloaded as
   large data collections.
-* microformats: some web sites may overlay their visual content with [specially
+* __microformats__: some web sites may overlay their visual content with [specially
   schematised labels](http://schema.org) for certain kinds of knowledge, such
   as publication metadata (title, author, publication date), contact details or
   product reviews.  While web sites using microformats are by far in the
@@ -114,14 +114,14 @@ Choose the right (i.e. the easiest) tool for the job.
 
 ### Not web scraping: information extraction
 
-Although it may sometimes be included under the rubric of web scraping, we are
-not going to cover tasks that target content in free text.  Such tasks, known
-by the name *information extraction* may seek a list of organisations
-mentioned, or may try to interpret a textual description of an event to build
-structure records of, say, casualties in national disasters or business
-acquisitions.  Related technology in text interpretation may try to determine
+We are also
+not including tasks that find content in free text.  Such tasks, known
+by the name *information extraction* may seek a list of all organisations
+mentioned, or may try to identify mentions of business acquisitions and the
+companies involved from text.
+Related technology in text interpretation may try to determine
 if an author used positive or negative language.  Related technology in
-information extraction may try to aggregate content found in differently
+information extraction may aggregate content found in differently
 formatted tables across many web sites (or academic papers).
 
 These are real technologies, but not within scope of web scraping. In contrast
@@ -140,7 +140,7 @@ tabular form. Our task is to build a system which extracts a spreadsheet in
 comma-delimited (CSV) format with rows like:
 
 ~~~
-year,symbol,title,url
+date,symbol,title,url
 …
 2010,S/RES/1942 (2010),Côte d'Ivoire,http://www.un.org/en/ga/search/view_doc.asp?symbol=S/RES/1942(2010)
 2010,S/RES/1941 (2010),Sierra Leone,http://www.un.org/en/ga/search/view_doc.asp?symbol=S/RES/1941(2010)
@@ -151,7 +151,7 @@ year,symbol,title,url
 {: .output}
 
 This comma-delimited format lists each resolution on a separate line, with the
-fields "year", "symbol", "title" and "url" separated by commas (",").
+fields "date", "symbol", "title" and "url" separated by commas (",").
 
 Looking at the web site, it appears quite close to this format already: each page, such as
 [the one for 1962](http://www.un.org/en/sc/documents/resolutions/1962.shtml)
@@ -201,7 +201,7 @@ consistent and machine-readable format that will allow us to:
 
 * count and plot how many resolutions were passed each year
 * count and plot how many pertained UN membership vs. security motions
-* search for resolutions pertaining to particular countries names
+* search for resolutions pertaining to particular countries' names
 * divide the statistics by geopolitical region (e.g. South America vs. East Asia)
 * periodically update our database as long as the web site maintains its current format
 
@@ -211,12 +211,12 @@ Recognition](http://en.wikipedia.org/wiki/Optical_character_recognition) since
 most of the resolutions are presented as PDFs of scanned paper prints.  We
 leave this as a further exercise for the student!)
 
-**How can we do this?**
+***How can we do this?***
 
 We could try copy-pasting the table for each year into a spreadsheet, but this can
 quickly become impractical when faced with a large number of years, and wanting
-to update it frequently. Another resource may have more pages (monthly
-or weekly records) for similar archives.
+to collect updates frequently. Another resource may have a multitude of pages (monthly
+or weekly records, perhaps) for similar archives.
 
 Fortunately, there are tools and techniques to automate at least part of the
 process, known as _web scraping_.
@@ -230,14 +230,14 @@ exact piece of software) can be used to extract their data.
 > ## Scraping robustly
 > This is but one instance of web scraping. It is interesting because the data is
 > apparently not already contained in a database on the UNSC web site. When we
-> come to scrape it, we will identify a number of quirks and inconsistencies that
-> are endemic to manually edited sites.  But quirks occur in web sites backed by
-> databases where, for instance, there may be multiple types of product and each
+> come to scrape it, we will identify a number of __quirks and inconsistencies__ that
+> are endemic to manually edited sites.  However, quirks may also occur in web sites backed by
+> databases. For instance, there may be multiple types of product and each
 > is presented differently; or some fields appear and disappear depending on the
-> object; or you want to be able to periodically update the database, but the web
+> object; or you want to be able to periodically update the scraped data, but the web
 > site changes its design altogether. Among the major challenges in designing a
-> web scraper is building a system that is _robust to variation_, or where it is
-> easy to diagnose that the web scraper has broken.
+> web scraper is building a system that is __robust to variation__, or where it is
+> easy to __diagnose that the web scraper has broken__.
 {: .callout}
 
 In this lesson, we will continue exploring techniques to extract
