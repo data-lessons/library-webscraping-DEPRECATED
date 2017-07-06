@@ -4,9 +4,16 @@ title: Setup
 permalink: /setup/
 ---
 
-## Requirements
+# Google Chrome requirements
 
-We will be using [Anaconda][anaconda] for this lesson, as it includes all of the necessary
+For the episode on visual scraping in your web browser, the following are required:
+
+* [Google Chrome for Desktop](https://www.google.com/chrome/browser/desktop/)
+* [Web Scraper extension](http://chrome.google.com/webstore/detail/web-scraper/jnhgnonknehpejjnehehllkliplmbmhn): click _Add to Chrome_
+
+# Python requirements
+
+We will be using [Anaconda][anaconda] for the episode on scraping in Python, as it includes all of the necessary
 requirements. If you don't wish to install Anaconda, you will need to install each requirement
 separately. This document only details installation with Anaconda. 
 
