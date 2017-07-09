@@ -25,11 +25,12 @@ to go when the workshop begins.
 
 * [Anaconda](#anaconda)
 
-Optional:
+Optional (already provided with Anaconda):
 
 * [Python 3.x](#python)
 * [Spyder 3](#spyder)
-* [BeautifulSoup 4](#bs)
+* [lxml](#lxml): a recent version
+* [cssselect](#cssselect)
 * [Requests](#reqeusts)
 
 <a name="anaconda"></a>
@@ -100,8 +101,16 @@ them below.
 
 * <a name="python"></a> [Python 3.x][python-install]
 * <a name="spyder"></a> [Spyder 3][spyder-install]
-* <a name="bs"></a> [BeautifulSoup 4][bs-install]
+* <a name="lxml"></a> [lxml][lxml-install]
+* <a name="cssselect"></a> [cssselect][cssselect-install]
 * <a name="requests"></a> [Requests][requests-install]
+
+With [Miniconda](https://conda.io/miniconda.html) for Python 3 installed, the following can be entered on the terminal command line to install all of the required packages:
+
+~~~
+conda install spyder lxml cssselect requests
+~~~
+{: .bash}
 
 ## Starting Python
 
@@ -130,7 +139,8 @@ $ spyder3
 [continuum-linux]: http://continuum.io/downloads#linux
 [python-install]: https://www.python.org/downloads/
 [spyder-install]: https://pythonhosted.org/spyder/installation.html
-[bs-install]: https://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup
+[lxml-install]: http://lxml.de/installation.html
+[cssselect-install]: https://pypi.python.org/pypi/cssselect
 [requests-install]: http://docs.python-requests.org/en/master/user/install/#install
 [python]: https://python.org
 [spyder]: https://pythonhosted.org/spyder/
