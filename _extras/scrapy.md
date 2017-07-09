@@ -1,4 +1,6 @@
 ---
+permalink /scrapy/
+layout: episode
 title: "Web scraping using Python and Scrapy"
 teaching: 90
 exercises: 30

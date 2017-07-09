@@ -7,7 +7,7 @@ questions:
 - "How can I download web pages' HTML in Python?"
 - "How can I evaluate XPath or CSS selectors in Python?"
 - "How can I format scraped data as a spreadsheet?"
-- "How do I build a scraper that is resilient to change and aberration?"
+- "How do I build a scraper that will keep working even if the page structure changes?"
 objectives:
 - "Using `requests.get` and resolving relative URLs with `urljoin`"
 - "Traversing HTML and extracting data from it with `lxml`"
@@ -22,7 +22,7 @@ keypoints:
 - "An element tree's `cssseelct` and `xpath` methods extract elements of interest."
 - "A scraper can be divided into: identifying the set of URLs to scrape; extracting some elements from a page; and transforming them into a useful output format."
 - "It is important but challenging to be resilient to variation in page structure: one should automatically validate and manually inspect their extractions."
-- "A framework like [Scrapy](http://scrapy.org) may help to build robust scrapers, but may be harder to learn."
+- "A framework like [Scrapy](http://scrapy.org) may help to build robust scrapers, but may be harder to learn. See [the Scrapy tutorial in Extras]({{page.root}}/scrapy)."
 ---
 
 # Recap
@@ -43,6 +43,8 @@ Writing a scraper in code may make it easier to maintain and extend, or to incor
 # Introducing Requests and lxml
 
 We make use of two tools that are not specifically developed for scraping, but are very useful for that purpose (among others).
+Both of these require a Python installation (Python 2.7, or Python 3.4 and higher; although our example code will focus on Python 3),
+and each library (requests and lxml and cssselect) needs to be installed as described in [Setup]({{page.root}}/Setup).
 
 [Requests](http://docs.python-requests.org/en/latest/) focuses on the task of interacting with web sites.
 It can download a web page's HTML given its URL.
@@ -59,9 +61,7 @@ It is also able to construct new well-formed HTML/XML documents, element by elem
 
 To use CSS selectors, the [cssselect](https://pypi.python.org/pypi/cssselect) package must also be installed.
 
-Both of these require a Python installation (Python 2.7, or Python 3.4 and higher; although our example code will focus on Python 3),
-and each library (requests and lxml and cssselect) needs to be installed as described in [Setup]({{page.root}}/Setup).
-If they are correctly installed, it should be possible to then write the following Python code without an error occurring:
+If all are correctly installed, it should be possible to then write the following Python code without an error occurring:
 
 ~~~
 >>> import requests
@@ -160,16 +160,6 @@ In the above example, we extract the first (and only) `<title>` element from the
 When we print the text of that parent node, we see that it consists of two blank lines. Why?
 
 Apart from basic features of Python, these are all the tools we should need.
-
-> ## Beautiful Soup, an alternative library to access a tree of HTML elements
-> [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/)
-> (or bs4) provides similar functionality to lxml and is
-> commonly used for web scraping. It does not, however, support XPath.
-> We also found it gave us worse results when our target web site had errors in
-> its HTML (using the `html.parser` backend). In some ways, Beautiful
-> Soup may have a more friendly design for web scraping (e.g. its handling
-> of text).
-{: .callout}
 
 # UNSC scraper overview
 
