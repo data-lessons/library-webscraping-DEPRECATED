@@ -123,7 +123,7 @@ import requests
 import lxml.html
 
 response = requests.get('http://www.un.org/en/sc/documents/resolutions/2016.shtml')
-tree = lxml.html.HTML(response.text)
+tree = lxml.html.fromstring(response.text)
 title_elem = tree.xpath('//title')[0]
 title_elem = tree.cssselect('title')[0]  # equivalent to previous XPath
 print("title tag:", title_elem.tag)
