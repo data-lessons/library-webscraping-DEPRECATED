@@ -1,3 +1,7 @@
+This material has now been moved to the Library Carpentry organisation.
+
+Find it here: https://github.com/LibraryCarpentry/lc-webscraping
+
 # Library Carpentry
 
 The Library Carpentry module '[Web Scraping for Librarians](http://data-lessons.github.io/library-webscraping/)' is maintained by [Belinda Weaver](https://github.com/weaverbel) and [Thomas Guignard](https://github.com/timtomch).
